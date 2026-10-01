@@ -1,191 +1,77 @@
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity UC is
-     Port ( Instr: in std_logic_vector(5 downto 0);
-     
-            RegDst: out std_logic;
-            ExtOp: out std_logic;            
-            ALUSrc: out std_logic; 
-            Branch: out std_logic; 
-            Brne: out std_logic;
-            Brgtz: out std_logic;
-            Jump: out std_logic;
-            ALUOp: out std_logic_vector(1 downto 0);
-            MemWrite: out std_logic;
-            MemtoReg: out std_logic;
-            RegWrite: out std_logic
-        );
+    Port ( Instr    : in  STD_LOGIC_VECTOR (5 downto 0);
+           RegDst   : out STD_LOGIC;
+           ExtOp    : out STD_LOGIC;
+           ALUSrc   : out STD_LOGIC;
+           Branch   : out STD_LOGIC;
+           Brne     : out STD_LOGIC;
+           Brgtz    : out STD_LOGIC;
+           Jump     : out STD_LOGIC;
+           ALUOp    : out STD_LOGIC_VECTOR (1 downto 0);
+           MemWrite : out STD_LOGIC;
+           MemtoReg : out STD_LOGIC;
+           RegWrite : out STD_LOGIC);
 end UC;
 
 architecture Behavioral of UC is
-
 begin
-    process(Instr)
-    begin 
-    
-    
-    RegDst <= '0'; 
-    ExtOp <= '0'; 
-    ALUSrc <= '0';
-    Branch <= '0'; 
-    Brne <='0';
-    Brgtz <='0';
-    Jump <='0'; 
+
+process(Instr)
+begin
+    RegDst   <= '0';
+    ExtOp    <= '0';
+    ALUSrc   <= '0';
+    Branch   <= '0';
+    Brne     <= '0';
+    Brgtz    <= '0';
+    Jump     <= '0';
     MemWrite <= '0';
-    MemtoReg <= '0'; 
-    RegWrite <= '0'; 
-    ALUOp <= "00";
-    
-    
+    MemtoReg <= '0';
+    RegWrite <= '0';
+    ALUOp    <= "00";
+
     case Instr is
-    
-        when "000000" => --ADD
-        
-         RegDst <= '1'; 
-         ExtOp <= 'X'; 
-         ALUSrc <= '0';
-         Branch <= '0'; 
-         Brne <='0';
-         Brgtz <='0';
-         Jump <='0'; 
-         MemWrite <= '0';
-         MemtoReg <= '0'; 
-         RegWrite <= '1'; 
-         ALUOp <= "10";
-        
-        
-        when "001000" => --ADDI
-        
-        RegDst <= '0';
-        ExtOP<='1';
-        ALUSrc<='1';
-        Branch <= '0';
-        Brne <='0';
-        Brgtz <='0';
-        Jump <= '0';
-        MemWrite <='0';
-        MemtoReg <='0';
-        RegWrite <='1';
-        ALUOp<="00";
-        
-        when "001100" => --ANDI
-        
-        RegDst <= '0';
-        ExtOP<='1';
-        ALUSrc<='1';
-        Branch <= '0';
-        Brne <='0';
-        Brgtz <='0';
-        Jump <= '0';
-        MemWrite <='0';
-        MemtoReg <='0';
-        RegWrite <='1';
-        ALUOp<="11";
-        
-        when "100011" => --lw
-        
-        RegDst <= '0';
-        ExtOP<='1';
-        ALUSrc<='1';
-        Branch <= '0';
-        Brne <='0';
-        Brgtz <='0';
-        Jump <= '0';
-        MemWrite <='0';
-        MemtoReg <='1';
-        RegWrite <='1';
-        ALUOp<="00";
-        
-        when "101011" => --sw
-        
-        RegDst <= 'X';
-        ExtOP<='1';
-        ALUSrc<='1';
-        Branch <= '0';
-        Brne <='0';
-        Brgtz <='0';
-        Jump <= '0';
-        MemWrite <='1';
-        MemtoReg <='X';
-        RegWrite <='0';
-        ALUOp<="00";
-        
-        when "000100" => --BEQ
-        
-        RegDst <= 'X';
-        ExtOP<='1';
-        ALUSrc<='0';
-        Branch <= '1';
-        Brne <='0';
-        Brgtz <='0';
-        Jump <= '0';
-        MemWrite <='0';
-        MemtoReg <='X';
-        RegWrite <='0';
-        ALUOp<="01";
-        
-        
-        when "000101" => --BNE
-        
-        RegDst <= 'X';
-        ExtOP<='1';
-        ALUSrc<='0';
-        Branch <= '0';
-        Brne <='1';
-        Brgtz <='0';
-        Jump <= '0';
-        MemWrite <='0';
-        MemtoReg <='X';
-        RegWrite <='0';
-        ALUOp<="01";
-        
-        when "000010" => --J
-        
-        RegDst <= 'X';
-        ExtOP<='X';
-        ALUSrc<='0';
-        Branch <= '0';
-        Brne <='0';
-        Brgtz <='0';
-        Jump <= '1';
-        MemWrite <='0';
-        MemtoReg <='X';
-        RegWrite <='0';
-        ALUOp<="XX";
-        
-        when "000111" => --BGTZ
-        
-        RegDst <= 'X';
-        ExtOP<='1';
-        ALUSrc<='0';
-        Branch <= '0';
-        Brne <='0';
-        Brgtz <='1';
-        Jump <= '0';
-        MemWrite <='0';
-        MemtoReg <='X';
-        RegWrite <='0';
-        ALUOp<="01";
-        
-        
+        when "000000" =>  -- R-type
+            RegDst   <= '1';
+            RegWrite <= '1';
+            ALUOp    <= "10";
+        when "001000" =>  -- addi
+            ExtOp    <= '1';
+            ALUSrc   <= '1';
+            RegWrite <= '1';
+        when "001100" =>  -- andi
+            ALUSrc   <= '1';
+            RegWrite <= '1';
+            ALUOp    <= "11";
+        when "100011" =>  -- lw
+            ExtOp    <= '1';
+            ALUSrc   <= '1';
+            MemtoReg <= '1';
+            RegWrite <= '1';
+        when "101011" =>  -- sw
+            ExtOp    <= '1';
+            ALUSrc   <= '1';
+            MemWrite <= '1';
+        when "000100" =>  -- beq
+            ExtOp    <= '1';
+            Branch   <= '1';
+            ALUOp    <= "01";
+        when "000101" =>  -- bne
+            ExtOp    <= '1';
+            Brne     <= '1';
+            ALUOp    <= "01";
+        when "000111" =>  -- bgtz
+            ExtOp    <= '1';
+            Brgtz    <= '1';
+            ALUOp    <= "01";
+        when "000010" =>  -- j
+            Jump     <= '1';
         when others =>
-        
-        RegDst <= 'X';
-        ExtOP<='X';
-        ALUSrc<='X';
-        Branch <= 'X';
-        Brne <='X';
-        Brgtz <='X';
-        Jump <= 'X';
-        MemWrite <='X';
-        MemtoReg <='X';
-        RegWrite <='X';
-        ALUOp<="XX";
-        
+            null;
     end case;
-        
-    end process;    
+end process;
 
 end Behavioral;
