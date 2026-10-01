@@ -21,7 +21,6 @@ end MEM;
 architecture Behavioral of MEM is
 
 
--- aici se va pune cazul de test
 type mem_type is array (0 to 63) of std_logic_vector(31 downto 0);
 
 signal mem : mem_type := (
